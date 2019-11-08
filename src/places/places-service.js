@@ -7,6 +7,7 @@ const PlacesService = {
             .from('favoreat_places AS place')
             .select(
                 'place.id',
+                'place.user_id',
                 'place.place_name',
                 'place.type',
                 'place.hh',
@@ -22,6 +23,7 @@ const PlacesService = {
             .from('favoreat_places AS places')
             .select(
                 'places.id',
+                'place.user_id',
                 'places.place_name',
                 'places.type',
                 'places.hh',
@@ -56,7 +58,8 @@ const PlacesService = {
             hh: placeData.hh,
             hh_start: placeData.hh_start,
             hh_end: placeData.hh_end,
-            item: xss(placeData.items),
+            notes: xss(placeData.notes),
+            items: xss(placeData.items),
         }
     },
     serializePlaces(places) {

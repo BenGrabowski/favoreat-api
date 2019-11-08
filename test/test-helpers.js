@@ -34,15 +34,62 @@ function makeUsersArray() {
   ]
 }
 
+function makePlacesArray() {
+  return [
+    {
+      id: 1,
+      user_id: 1,
+      place_name: 'test1',
+      type: 'Restaurant',
+      hh: true,
+      hh_start: '5:00 PM',
+      hh_end: '7:00 PM',
+      notes: 'test notes 1',
+      items: ['item1', 'item2', 'item3']
+    },
+    {
+      id: 2,
+      user_id: 2,
+      place_name: 'test2',
+      type: 'Bar',
+      hh: true,
+      hh_start: '4:30 PM',
+      hh_end: '6:00 PM',
+      notes: 'test notes 2',
+      items: null
+    },
+    {
+      id: 3,
+      user_id: 3,
+      place_name: 'test3',
+      type: 'Brewery',
+      hh: false,
+      hh_start: null,
+      hh_end: null,
+      notes: null,
+      items: null
+    },
+  ]
+}
+
 function makeFixtures() {
     const testUsers = makeUsersArray()
-    return { testUsers }
+    const testPlaces = makePlacesArray()
+    return { testUsers, testPlaces }
 }
+
+// function makeExpectedPlace(users, place) {
+//   const user = users
+//     .find(user => user.id === place.user_id)
+
+  
+// }
 
 function cleanTables(db) {
     return db.raw(
         `TRUNCATE
-            favoreat_users
+            favoreat_users,
+            favoreat_places
             RESTART IDENTITY CASCADE`
     )
 }
@@ -61,9 +108,32 @@ function seedUsers(db, users) {
       )
   }
 
+  function seedPlaces(db, places, users) {
+    return db.transaction(async trx => {
+      await seedUsers(trx, users)
+      await trx.into('favoreat_places').insert(places)
+      await trx.raw(
+        `SELECT setval('favoreat_places_id_seq', ?)`,
+        [places[places.length -1].id]
+      )
+    })
+  }
+
+  function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+    const token = jwt.sign({ user_id: user.id }, secret, {
+      subject: user.user_name,
+      algorithm: 'HS256',
+    })
+    return `Bearer ${token}`
+  }
+
 module.exports = {
     makeUsersArray,
+    makePlacesArray,
     makeFixtures,
+    // makeExpectedPlace,
     seedUsers,
+    seedPlaces,
     cleanTables,
+    makeAuthHeader,
 }
