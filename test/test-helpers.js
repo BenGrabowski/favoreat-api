@@ -42,8 +42,8 @@ function makePlacesArray() {
       place_name: 'test1',
       type: 'Restaurant',
       hh: true,
-      hh_start: '5:00 PM',
-      hh_end: '7:00 PM',
+      hh_start: '17:00:00',
+      hh_end: '19:00:00',
       notes: 'test notes 1',
       items: ['item1', 'item2', 'item3']
     },
@@ -53,8 +53,8 @@ function makePlacesArray() {
       place_name: 'test2',
       type: 'Bar',
       hh: true,
-      hh_start: '4:30 PM',
-      hh_end: '6:00 PM',
+      hh_start: '16:30:00',
+      hh_end: '18:00:00',
       notes: 'test notes 2',
       items: null
     },

@@ -59,7 +59,7 @@ const PlacesService = {
             hh_start: placeData.hh_start,
             hh_end: placeData.hh_end,
             notes: xss(placeData.notes),
-            items: xss(placeData.items),
+            items: placeData.items.map(place => xss(place)),
         }
     },
     serializePlaces(places) {
