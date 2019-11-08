@@ -34,7 +34,7 @@ describe('Places Endpoints', () => {
         )
         
         it(`responds with 200 and all of the User's things`, () => {
-            expectedPlace = testPlaces.find(place => place.user_id == 1)
+            expectedPlace = testPlaces.filter(place => place.user_id == 1)
             
             return supertest(app)
                 .get('/api/places/1')
