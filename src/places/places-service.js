@@ -20,19 +20,19 @@ const PlacesService = {
     },
     getById(db, id) {
         return db
-            .from('favoreat_places AS places')
+            .from('favoreat_places AS place')
             .select(
-                'places.id',
+                'place.id',
                 'place.user_id',
-                'places.place_name',
-                'places.type',
-                'places.hh',
-                'places.hh_start',
-                'places.hh_end',
-                'places.notes',
-                'places.items'
+                'place.place_name',
+                'place.type',
+                'place.hh',
+                'place.hh_start',
+                'place.hh_end',
+                'place.notes',
+                'place.items'
             )
-            .where('places.id', id)
+            .where('place.id', id)
             .first()
     },
     insertPlace(db, newPlace) {
@@ -45,7 +45,16 @@ const PlacesService = {
                 PlacesService.getById(db, place.id)    
             )
     },
-
+    deletePlace(db, id) {
+        return db
+            .where({ id })
+            .delete()
+    },
+    updatePlace(db, id, newPlaceFields) {
+        return db
+            .where({ id })
+            .update(newPlaceFields)
+    },
     serializePlace(place) {
         const placeTree = new Treeize()
         const placeData = placeTree.grow([ place ]).getData()[0]

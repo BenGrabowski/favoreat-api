@@ -53,4 +53,59 @@ placesRouter
         .catch(next)
     })
 
+    //Delete Place
+    placesRouter
+        .route('/:id')
+        .all(requireAuth)
+        .all((req, res, next) => {
+            PlacesService.getById(
+                req.app.get('db'),
+                req.params.id
+            )
+                .then(place => {
+                    if (!place) {
+                        return res.status(404).json({
+                            error: { message: `Place doesn't exist` }
+                        })
+                    }
+                    res.place = place
+                    next()
+                })
+                .catch(next)
+        })
+        .get((req, res, next) => {
+            res.json(PlacesService.serializePlace(res.place))
+        })
+        .delete((req, res, next) => {
+            PlacesService.deletePlace(
+                req.app.get('db'),
+                req.params.id
+            )
+                .then(() => {
+                    res.status(204).end()
+                })
+                .catch(next)
+        })
+        .patch(jsonBodyParser, (req, res, next) => {
+            const { place_name, type, hh, hh_start, hh_end, notes, items } = req.body
+            const placeToUpdate = { place_name, type, hh, hh_start, hh_end, notes, items }
+
+            const numberOfValues = Object.values(placeToUpdate).filter(Boolean).length
+            if (numberOfValues === 0)
+                return res.status(400).json({
+                    error: { message: `Request body must contain all required fields` }
+                })
+
+            PlacesService.updatePlace(
+                req.app.get('db'),
+                req.params.id,
+                placeToUpdate
+            )
+                .then(numRowsAffected => {
+                    res.status(204).end()
+                })
+                .catch(next)
+        })
+
+
 module.exports = placesRouter
