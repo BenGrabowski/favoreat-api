@@ -10,7 +10,7 @@ const jsonBodyParser = express.json()
 placesRouter
     // .route('/:user_id')
     .route('/')
-    // .all(requireAuth)
+    .all(requireAuth)
     .get(jsonBodyParser, (req, res, next) => {
         console.log(req.body.user_id)
         PlacesService.getUsersPlaces(
@@ -57,7 +57,7 @@ placesRouter
 
     placesRouter
         .route('/:place_id')
-        // .all(requireAuth)
+        .all(requireAuth)
         .all((req, res, next) => {
             PlacesService.getById(
                 req.app.get('db'),
@@ -96,7 +96,7 @@ placesRouter
             const numberOfValues = Object.values(placeToUpdate).filter(Boolean).length
             if (numberOfValues === 0)
                 return res.status(400).json({
-                    error: { message: `Request body must contain all required fields` }
+                    error: { message: `Request body must contain place_name, type, hh, hh_start, hh_end, notes, or items` }
                 })
 
             PlacesService.updatePlace(
