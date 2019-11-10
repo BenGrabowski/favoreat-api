@@ -24,7 +24,7 @@ describe('Places Endpoints', () => {
 
     afterEach('cleanup', () => helpers.cleanTables(db))
 
-    describe('GET /api/places/:user_id', () => {
+    describe('GET /api/places', () => {
         beforeEach('insert places', () =>
             helpers.seedPlaces(
                 db,
@@ -33,17 +33,18 @@ describe('Places Endpoints', () => {
             )
         )
         
-        it(`responds with 200 and all of the User's things`, () => {
+        it(`responds with 200 and all of the User's places`, () => {
             expectedPlace = testPlaces.filter(place => place.user_id == 1)
             
             return supertest(app)
-                .get('/api/places/1')
+                .get('/api/places')
                 .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                .send({user_id: testUsers[0].id})
                 .expect(200, expectedPlace)
         })
     })
 
-    describe('POST /api/places/:user_id', () => {
+    describe('POST /api/places', () => {
         beforeEach('insert users', () => 
             helpers.seedUsers(
                 db,
@@ -55,9 +56,10 @@ describe('Places Endpoints', () => {
             newPlace = testPlaces[0]
 
             return supertest(app)
-                .post('/api/places/1')
+                .post('/api/places')
                 .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .send(newPlace)
+                .send({user_id: testUsers[0].id})
                 .expect(201)
                 .expect(res => {
                     expect(res.body).to.have.property('id')
@@ -89,7 +91,7 @@ describe('Places Endpoints', () => {
         })
     })
 
-    describe('DELETE /api/places/:id', () => {
+    describe('DELETE /api/places/:place_ id', () => {
         beforeEach('insert users', () => {
             helpers.seedUsers(
                 db,
@@ -123,15 +125,7 @@ describe('Places Endpoints', () => {
         })
     })
 
-    describe('PATCH /api/places/:id', () => {
-        beforeEach('insert places', () => {
-            helpers.seedPlaces(
-                db,
-                testPlaces,
-                testUsers
-            )
-        })
-
+    describe('PATCH /api/places/:place_id', () => {
         beforeEach('insert users', () => {
             helpers.seedUsers(
                 db,
@@ -139,6 +133,13 @@ describe('Places Endpoints', () => {
             )
         })
         
+        beforeEach('insert places', () => {
+            helpers.seedPlaces(
+                db,
+                testPlaces,
+                testUsers
+            )
+        })
 
         it('responds 204 and updates the place', () => {
             const idToUpdate = 2
@@ -158,7 +159,7 @@ describe('Places Endpoints', () => {
                 .expect(204)
                 .then(res => 
                     supertest(app)
-                    .get(`/api/places/${userId}`)
+                    .get(`/api/places/${idToUpdate}`)
                     .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
                     .expect(expectedPlace)
                 )

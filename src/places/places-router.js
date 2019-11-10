@@ -8,14 +8,14 @@ const jsonBodyParser = express.json()
 
 // Get User's Places
 placesRouter
-    .route('/:user_id')
-    // .route('/')
+    // .route('/:user_id')
+    .route('/')
     .all(requireAuth)
     .get((req, res, next) => {
         PlacesService.getUsersPlaces(
             req.app.get('db'),
-            req.params.user_id
-            // req.body.user_id
+            // req.params.user_id
+            req.body.user_id
         )
         .then(places => {
             res.json(PlacesService.serializePlaces(places))
@@ -37,8 +37,8 @@ placesRouter
         newPlace.hh_end = hh_end
         newPlace.notes = notes
         newPlace.items = items
-        // newPlace.user_id = user_id
-        newPlace.user_id = req.params.user_id
+        newPlace.user_id = user_id
+        // newPlace.user_id = req.params.user_id
 
         PlacesService.insertPlace(
             req.app.get('db'),
@@ -53,14 +53,13 @@ placesRouter
         .catch(next)
     })
 
-    //Delete Place
     placesRouter
-        .route('/:id')
+        .route('/:place_id')
         .all(requireAuth)
         .all((req, res, next) => {
             PlacesService.getById(
                 req.app.get('db'),
-                req.params.id
+                req.params.place_id
             )
                 .then(place => {
                     if (!place) {
@@ -73,19 +72,21 @@ placesRouter
                 })
                 .catch(next)
         })
+        //Get Place
         .get((req, res, next) => {
             res.json(PlacesService.serializePlace(res.place))
         })
         .delete((req, res, next) => {
             PlacesService.deletePlace(
                 req.app.get('db'),
-                req.params.id
+                req.params.place_id
             )
                 .then(() => {
                     res.status(204).end()
                 })
                 .catch(next)
         })
+        //Update Place
         .patch(jsonBodyParser, (req, res, next) => {
             const { place_name, type, hh, hh_start, hh_end, notes, items } = req.body
             const placeToUpdate = { place_name, type, hh, hh_start, hh_end, notes, items }
@@ -98,7 +99,7 @@ placesRouter
 
             PlacesService.updatePlace(
                 req.app.get('db'),
-                req.params.id,
+                req.params.place_id,
                 placeToUpdate
             )
                 .then(numRowsAffected => {
