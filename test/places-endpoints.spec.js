@@ -38,7 +38,7 @@ describe('Places Endpoints', () => {
             
             return supertest(app)
                 .get('/api/places')
-                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                // .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .send({user_id: testUsers[0].id})
                 .expect(200, expectedPlace)
         })
@@ -57,7 +57,7 @@ describe('Places Endpoints', () => {
 
             return supertest(app)
                 .post('/api/places')
-                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                // .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .send(newPlace)
                 .send({user_id: testUsers[0].id})
                 .expect(201)
@@ -114,12 +114,12 @@ describe('Places Endpoints', () => {
             console.log(testPlaces[idToDelete])
             return supertest(app)
                 .delete(`/api/places/${idToDelete}`)
-                .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                // .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
                 .expect(204)
                 .then(res => 
                     supertest(app)
                         .get(`/api/places/${userId}`)
-                        .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                        // .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
                         .expect(expectedPlaces)
                 )
         })
@@ -154,7 +154,7 @@ describe('Places Endpoints', () => {
             }
             return supertest(app)
                 .patch(`/api/places/${idToUpdate}`)
-                .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                // .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
                 .send(updatePlace)
                 .expect(204)
                 .then(res => 

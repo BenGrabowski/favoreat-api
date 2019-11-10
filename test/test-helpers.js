@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const AuthService = require('../src/auth/auth-service')
 
 function makeUsersArray() {
   return [
@@ -120,10 +121,12 @@ function seedUsers(db, users) {
   }
 
   function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
-    const token = jwt.sign({ user_id: user.id }, secret, {
-      subject: user.user_name,
-      algorithm: 'HS256',
-    })
+    // const token = jwt.sign({ user_id: user.id }, secret, {
+    //   subject: user.user_name,
+    //   algorithm: 'HS256',
+    // })
+    const token = AuthService.createJwt(user.user_name, { user_id: user.id })
+    
     return `Bearer ${token}`
   }
 

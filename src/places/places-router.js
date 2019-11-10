@@ -10,14 +10,16 @@ const jsonBodyParser = express.json()
 placesRouter
     // .route('/:user_id')
     .route('/')
-    .all(requireAuth)
-    .get((req, res, next) => {
+    // .all(requireAuth)
+    .get(jsonBodyParser, (req, res, next) => {
+        console.log(req.body.user_id)
         PlacesService.getUsersPlaces(
             req.app.get('db'),
             // req.params.user_id
             req.body.user_id
         )
         .then(places => {
+            console.log(PlacesService.serializePlaces(places))
             res.json(PlacesService.serializePlaces(places))
         })
         .catch(next)
@@ -55,7 +57,7 @@ placesRouter
 
     placesRouter
         .route('/:place_id')
-        .all(requireAuth)
+        // .all(requireAuth)
         .all((req, res, next) => {
             PlacesService.getById(
                 req.app.get('db'),
