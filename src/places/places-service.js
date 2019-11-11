@@ -46,12 +46,12 @@ const PlacesService = {
             )
     },
     deletePlace(db, id) {
-        return db
+        return db('favoreat_places')
             .where({ id })
             .delete()
     },
     updatePlace(db, id, newPlaceFields) {
-        return db
+        return db('favoreat_places')
             .where({ id })
             .update(newPlaceFields)
     },

@@ -92,15 +92,15 @@ describe('Places Endpoints', () => {
     })
 
     describe('DELETE /api/places/:place_ id', () => {
-        beforeEach('insert users', () => {
-            helpers.seedUsers(
-                db,
-                testUsers
-            )
-        })
+        // beforeEach('insert users', () => {
+        //     return helpers.seedUsers(
+        //         db,
+        //         testUsers
+        //     )
+        // })
         
         beforeEach('insert places', () => {
-            helpers.seedPlaces(
+            return helpers.seedPlaces(
                 db,
                 testPlaces,
                 testUsers
@@ -126,15 +126,15 @@ describe('Places Endpoints', () => {
     })
 
     describe('PATCH /api/places/:place_id', () => {
-        beforeEach('insert users', () => {
-            helpers.seedUsers(
-                db,
-                testUsers
-            )
-        })
+        // beforeEach('insert users', () => {
+        //     return helpers.seedUsers(
+        //         db,
+        //         testUsers
+        //     )
+        // })
         
         beforeEach('insert places', () => {
-            helpers.seedPlaces(
+            return helpers.seedPlaces(
                 db,
                 testPlaces,
                 testUsers
