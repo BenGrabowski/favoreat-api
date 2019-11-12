@@ -110,7 +110,7 @@ describe('Places Endpoints', () => {
         it('deletes the place and returns 204', () => {
             const idToDelete = 2
             const userId = 2
-            const expectedPlaces = testPlaces.filter(place => place.id !== idToDelete)
+            const expectedPlaces = testPlaces.filter(place => place.id !== idToDelete && place.user_id === userId)
             console.log(testPlaces[idToDelete])
             return supertest(app)
                 .delete(`/api/places/${idToDelete}`)
@@ -118,7 +118,8 @@ describe('Places Endpoints', () => {
                 .expect(204)
                 .then(res => 
                     supertest(app)
-                        .get(`/api/places/${userId}`)
+                        .get(`/api/places`)
+                        .send({user_id: testUsers[1].id})
                         .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
                         .expect(expectedPlaces)
                 )
@@ -141,8 +142,8 @@ describe('Places Endpoints', () => {
             )
         })
 
-        it('responds 204 and updates the place', () => {
-            const idToUpdate = 2
+        it.only('responds 204 and updates the place', () => {
+            const idToUpdate = 3
             // const userId = 2
             const updatePlace = {
                 place_name: 'updated place name',
@@ -150,19 +151,29 @@ describe('Places Endpoints', () => {
             }
             const expectedPlace = {
                 ...testPlaces[idToUpdate - 1],
-                updatePlace
+                ...updatePlace
             }
+            
             return supertest(app)
-                .patch(`/api/places/${idToUpdate}`)
+                .get(`/api/places/${idToUpdate}`)
                 .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
-                .send(updatePlace)
-                .expect(204)
-                .then(res => 
-                    supertest(app)
-                    .get(`/api/places/${idToUpdate}`)
-                    .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
-                    .expect(expectedPlace)
-                )
+                .expect(function(res){
+                    console.log('1',res.body);
+                    return;
+                    return supertest(app)
+                        .patch(`/api/places/${idToUpdate}`)
+                        .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                        .send(updatePlace)
+                        .expect(204)
+                        .then(res => 
+                            supertest(app)
+                            .get(`/api/places/${idToUpdate}`)
+                            .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                            // .expect(expectedPlace)
+                            .expect(function(res){console.log(res.body)})
+                        )
+                })
+                
         })
     })
 })

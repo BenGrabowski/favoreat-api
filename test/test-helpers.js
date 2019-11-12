@@ -68,7 +68,7 @@ function makePlacesArray() {
       hh_start: null,
       hh_end: null,
       notes: null,
-      items: null
+      items: []
     },
   ]
 }
@@ -126,7 +126,7 @@ function seedUsers(db, users) {
     //   algorithm: 'HS256',
     // })
     const token = AuthService.createJwt(user.user_name, { user_id: user.id })
-    
+
     return `Bearer ${token}`
   }
 
