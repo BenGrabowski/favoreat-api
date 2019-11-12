@@ -143,7 +143,7 @@ describe('Places Endpoints', () => {
         })
 
         it.only('responds 204 and updates the place', () => {
-            const idToUpdate = 3
+            const idToUpdate = 2
             // const userId = 2
             const updatePlace = {
                 place_name: 'updated place name',
@@ -155,25 +155,17 @@ describe('Places Endpoints', () => {
             }
             
             return supertest(app)
-                .get(`/api/places/${idToUpdate}`)
+                .patch(`/api/places/${idToUpdate}`)
                 .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
-                .expect(function(res){
-                    console.log('1',res.body);
-                    return;
-                    return supertest(app)
-                        .patch(`/api/places/${idToUpdate}`)
-                        .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
-                        .send(updatePlace)
-                        .expect(204)
-                        .then(res => 
-                            supertest(app)
-                            .get(`/api/places/${idToUpdate}`)
-                            .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
-                            // .expect(expectedPlace)
-                            .expect(function(res){console.log(res.body)})
-                        )
-                })
-                
+                .send(updatePlace)
+                .expect(204)
+                .then(res => 
+                    supertest(app)
+                    .get(`/api/places/${idToUpdate}`)
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                    .expect(expectedPlace)
+                    // .expect(function(res){console.log(res.body)})
+                )
         })
     })
 })

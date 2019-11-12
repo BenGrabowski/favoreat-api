@@ -68,7 +68,7 @@ function makePlacesArray() {
       hh_start: null,
       hh_end: null,
       notes: null,
-      items: []
+      items: null
     },
   ]
 }
