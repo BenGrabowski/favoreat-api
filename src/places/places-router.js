@@ -26,8 +26,8 @@ placesRouter
     })
     //Add New Place
     .post(jsonBodyParser, (req, res, next) => {
-        const { id, user_id, place_name, type, hh, hh_start, hh_end, notes, items } = req.body
-        const newPlace = {id, place_name, type, hh}
+        const { user_id, place_name, type, hh, hh_start, hh_end, notes, items } = req.body
+        const newPlace = { place_name, type, hh}
 
         for (const [key, value] of Object.entries(newPlace))
             if (value == null)
