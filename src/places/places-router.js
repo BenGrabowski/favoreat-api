@@ -8,14 +8,12 @@ const jsonBodyParser = express.json()
 
 // Get User's Places
 placesRouter
-    // .route('/:user_id')
     .route('/')
     .all(requireAuth)
     .get(jsonBodyParser, (req, res, next) => {
         console.log(req.body.user_id)
         PlacesService.getUsersPlaces(
             req.app.get('db'),
-            // req.params.user_id
             req.body.user_id
         )
         .then(places => {
@@ -40,8 +38,7 @@ placesRouter
         newPlace.notes = notes
         newPlace.items = items
         newPlace.user_id = user_id
-        // newPlace.user_id = req.params.user_id
-
+        
         PlacesService.insertPlace(
             req.app.get('db'),
             newPlace
