@@ -14,7 +14,7 @@ placesRouter
         console.log(req.body.user_id)
         PlacesService.getUsersPlaces(
             req.app.get('db'),
-            req.body.user_id
+            req.headers.user_id
         )
         .then(places => {
             console.log(PlacesService.serializePlaces(places))
@@ -38,7 +38,7 @@ placesRouter
         newPlace.notes = notes
         newPlace.items = items
         newPlace.user_id = user_id
-        
+
         PlacesService.insertPlace(
             req.app.get('db'),
             newPlace

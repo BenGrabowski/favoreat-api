@@ -16,7 +16,7 @@ const PlacesService = {
                 'place.notes',
                 'place.items'
             )
-            .where({ user_id })
+            .where('place.user_id', user_id)
     },
     getById(db, id) {
         return db
