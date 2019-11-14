@@ -11,7 +11,7 @@ placesRouter
     .route('/')
     .all(requireAuth)
     .get(jsonBodyParser, (req, res, next) => {
-        console.log(req.body.user_id)
+        console.log(req.headers.user_id)
         PlacesService.getUsersPlaces(
             req.app.get('db'),
             req.headers.user_id
