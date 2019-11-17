@@ -11,7 +11,7 @@ placesRouter
     .route('/')
     .all(requireAuth)
     .get(jsonBodyParser, (req, res, next) => {
-        console.log(req.headers.user_id)
+        // console.log(req.headers.user_id)
         PlacesService.getUsersPlaces(
             req.app.get('db'),
             req.headers.user_id
@@ -24,7 +24,8 @@ placesRouter
     })
     //Add New Place
     .post(jsonBodyParser, (req, res, next) => {
-        const { user_id, place_name, type, hh, hh_start, hh_end, notes, items } = req.body
+        const { place_name, type, hh, hh_start, hh_end, notes, items } = req.body
+        const user_id = req.headers.user_id
         const newPlace = { place_name, type, hh}
 
         for (const [key, value] of Object.entries(newPlace))
