@@ -23,7 +23,7 @@ placesRouter
     //Add New Place
     .post(jsonBodyParser, (req, res, next) => {
         const { place_name, type, hh, hh_start, hh_end, notes, items } = req.body
-        console.log(place_name)
+        // console.log(place_name)
         const user_id = req.headers.user_id
         const newPlace = { place_name, type, hh}
 
@@ -33,13 +33,13 @@ placesRouter
                     error: `Missing '${key}' in request body`
                 })
         
-        newPlace.hh_start = hh_start
-        newPlace.hh_end = hh_end
+        newPlace.hh_start = (hh_start === '') ? null : hh_start
+        newPlace.hh_end = (hh_end === '') ? null : 
         newPlace.notes = notes
         newPlace.items = items
         newPlace.user_id = user_id
-
-        console.log(newPlace)
+        console.log(newPlace.hh_start)
+        // console.log(newPlace)
 
         PlacesService.insertPlace(
             req.app.get('db'),
