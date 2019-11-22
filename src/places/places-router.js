@@ -11,13 +11,11 @@ placesRouter
     .route('/')
     .all(requireAuth)
     .get(jsonBodyParser, (req, res, next) => {
-        // console.log(req.headers.user_id)
         PlacesService.getUsersPlaces(
             req.app.get('db'),
             req.headers.user_id
         )
         .then(places => {
-            console.log(PlacesService.serializePlaces(places))
             res.json(PlacesService.serializePlaces(places))
         })
         .catch(next)
@@ -25,6 +23,7 @@ placesRouter
     //Add New Place
     .post(jsonBodyParser, (req, res, next) => {
         const { place_name, type, hh, hh_start, hh_end, notes, items } = req.body
+        console.log(place_name)
         const user_id = req.headers.user_id
         const newPlace = { place_name, type, hh}
 
@@ -39,6 +38,8 @@ placesRouter
         newPlace.notes = notes
         newPlace.items = items
         newPlace.user_id = user_id
+
+        console.log(newPlace)
 
         PlacesService.insertPlace(
             req.app.get('db'),
