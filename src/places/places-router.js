@@ -34,7 +34,7 @@ placesRouter
                 })
         
         newPlace.hh_start = (hh_start === '') ? null : hh_start
-        newPlace.hh_end = (hh_end === '') ? null : 
+        newPlace.hh_end = (hh_end === '') ? null : hh_end
         newPlace.notes = notes
         newPlace.items = items
         newPlace.user_id = user_id
