@@ -38,8 +38,8 @@ placesRouter
         newPlace.notes = notes
         newPlace.items = items
         newPlace.user_id = user_id
-        console.log(newPlace.hh_start)
-        // console.log(newPlace)
+        // console.log(newPlace.hh_start)
+        console.log(newPlace)
 
         PlacesService.insertPlace(
             req.app.get('db'),
