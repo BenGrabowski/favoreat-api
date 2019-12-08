@@ -7,28 +7,24 @@ function makeUsersArray() {
     {
       id: 1,
       user_name: 'test-user-1',
-      full_name: 'Test user 1',
       password: 'password',
       date_created: '2029-01-22T16:28:32.615Z',
     },
     {
       id: 2,
       user_name: 'test-user-2',
-      full_name: 'Test user 2',
       password: 'password',
       date_created: '2029-01-22T16:28:32.615Z',
     },
     {
       id: 3,
       user_name: 'test-user-3',
-      full_name: 'Test user 3',
       password: 'password',
       date_created: '2029-01-22T16:28:32.615Z',
     },
     {
       id: 4,
       user_name: 'test-user-4',
-      full_name: 'Test user 4',
       password: 'password',
       date_created: '2029-01-22T16:28:32.615Z',
     },
@@ -57,7 +53,7 @@ function makePlacesArray() {
       hh_start: '16:30:00',
       hh_end: '18:00:00',
       notes: 'test notes 2',
-      items: null
+      items: ['item1']
     },
     {
       id: 3,
@@ -78,13 +74,6 @@ function makeFixtures() {
     const testPlaces = makePlacesArray()
     return { testUsers, testPlaces }
 }
-
-// function makeExpectedPlace(users, place) {
-//   const user = users
-//     .find(user => user.id === place.user_id)
-
-  
-// }
 
 function cleanTables(db) {
     return db.raw(
@@ -121,12 +110,7 @@ function seedUsers(db, users) {
   }
 
   function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
-    // const token = jwt.sign({ user_id: user.id }, secret, {
-    //   subject: user.user_name,
-    //   algorithm: 'HS256',
-    // })
     const token = AuthService.createJwt(user.user_name, { user_id: user.id })
-
     return `Bearer ${token}`
   }
 
@@ -134,7 +118,6 @@ module.exports = {
     makeUsersArray,
     makePlacesArray,
     makeFixtures,
-    // makeExpectedPlace,
     seedUsers,
     seedPlaces,
     cleanTables,

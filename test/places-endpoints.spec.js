@@ -39,7 +39,8 @@ describe('Places Endpoints', () => {
             return supertest(app)
                 .get('/api/places')
                 .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-                .send({user_id: testUsers[0].id})
+                .set('user_id', testUsers[0].id)
+                // .send({user_id: testUsers[0].id})
                 .expect(200, expectedPlace)
         })
     })
@@ -58,8 +59,9 @@ describe('Places Endpoints', () => {
             return supertest(app)
                 .post('/api/places')
                 .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                .set('user_id', testUsers[0].id)
                 .send(newPlace)
-                .send({user_id: testUsers[0].id})
+                // .send({user_id: testUsers[0].id})
                 .expect(201)
                 .expect(res => {
                     expect(res.body).to.have.property('id')
@@ -115,11 +117,13 @@ describe('Places Endpoints', () => {
             return supertest(app)
                 .delete(`/api/places/${idToDelete}`)
                 .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+                .set('user_id', testUsers[1].id)
                 .expect(204)
                 .then(res => 
                     supertest(app)
                         .get(`/api/places`)
-                        .send({user_id: testUsers[1].id})
+                        // .send({user_id: testUsers[1].id})
+                        .set('user_id', testUsers[1].id)
                         .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
                         .expect(expectedPlaces)
                 )
@@ -142,7 +146,7 @@ describe('Places Endpoints', () => {
             )
         })
 
-        it.only('responds 204 and updates the place', () => {
+        it('responds 204 and updates the place', () => {
             const idToUpdate = 2
             // const userId = 2
             const updatePlace = {
@@ -153,6 +157,8 @@ describe('Places Endpoints', () => {
                 ...testPlaces[idToUpdate - 1],
                 ...updatePlace
             }
+
+            console.log(expectedPlace)
             
             return supertest(app)
                 .patch(`/api/places/${idToUpdate}`)
