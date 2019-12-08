@@ -87,27 +87,6 @@ placesRouter
                 })
                 .catch(next)
         })
-        
-    //Update Place    
-    placesRouter
-        .route('/edit/:place_id')
-        .all(requireAuth)
-        .all((req, res, next) => {
-            PlacesService.getById(
-                req.app.get('db'),
-                req.params.place_id
-            )
-                .then(place => {
-                    if (!place) {
-                        return res.status(404).json({
-                            error: { message: `Place doesn't exist` }
-                        })
-                    }
-                    res.place = place
-                    next()
-                })
-                .catch(next)
-        })
         .patch(jsonBodyParser, (req, res, next) => {
             const { place_name, type, hh, hh_start, hh_end, notes, items } = req.body
             const placeToUpdate = { place_name, type, hh, hh_start, hh_end, notes, items }
