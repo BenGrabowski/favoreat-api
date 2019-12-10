@@ -17,6 +17,7 @@ const PlacesService = {
                 'place.items'
             )
             .where('place.user_id', user_id)
+            .orderBy('id', 'desc')
     },
     getById(db, id) {
         return db

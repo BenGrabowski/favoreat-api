@@ -38,8 +38,6 @@ placesRouter
         newPlace.notes = notes
         newPlace.items = items
         newPlace.user_id = user_id
-        // console.log(newPlace.hh_start)
-        console.log(newPlace)
 
         PlacesService.insertPlace(
             req.app.get('db'),
@@ -90,10 +88,8 @@ placesRouter
         .patch(jsonBodyParser, (req, res, next) => {
             const { place_name, type, hh, hh_start, hh_end, notes, items } = req.body
             const placeToUpdate = { place_name, type, hh, hh_start, hh_end, notes, items }
-            console.log('req.body is', req.body)
 
             const numberOfValues = Object.values(placeToUpdate).filter(Boolean).length
-            console.log(numberOfValues)
             if (numberOfValues === 0)
                 return res.status(400).json({
                     error: { message: `Request body must contain place_name, type, hh, hh_start, hh_end, notes, or items` }
