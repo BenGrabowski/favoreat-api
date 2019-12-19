@@ -23,7 +23,6 @@ placesRouter
     //Add New Place
     .post(jsonBodyParser, (req, res, next) => {
         const { place_name, type, hh, hh_start, hh_end, notes, items } = req.body
-        // console.log(place_name)
         const user_id = req.headers.user_id
         const newPlace = { place_name, type, hh}
 
