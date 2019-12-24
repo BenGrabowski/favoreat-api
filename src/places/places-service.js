@@ -1,5 +1,5 @@
-const xss = require('xss')
-const Treeize = require('treeize')
+const xss = require('xss');
+const Treeize = require('treeize');
 
 const PlacesService = {
     getUsersPlaces(db, user_id) {
@@ -17,7 +17,7 @@ const PlacesService = {
                 'place.items'
             )
             .where('place.user_id', user_id)
-            .orderBy('id', 'desc')
+            .orderBy('id', 'desc');
     },
     getById(db, id) {
         return db
@@ -34,7 +34,7 @@ const PlacesService = {
                 'place.items'
             )
             .where('place.id', id)
-            .first()
+            .first();
     },
     insertPlace(db, newPlace) {
         return db
@@ -44,21 +44,21 @@ const PlacesService = {
             .then(([place]) => place)
             .then(place =>
                 PlacesService.getById(db, place.id)    
-            )
+            );
     },
     deletePlace(db, id) {
         return db('favoreat_places')
             .where({ id })
-            .delete()
+            .delete();
     },
     updatePlace(db, id, newPlaceFields) {
         return db('favoreat_places')
             .where({ id })
-            .update(newPlaceFields)
+            .update(newPlaceFields);
     },
     serializePlace(place) {
-        const placeTree = new Treeize()
-        const placeData = placeTree.grow([ place ]).getData()[0]
+        const placeTree = new Treeize();
+        const placeData = placeTree.grow([ place ]).getData()[0];
 
         return {
             id: placeData.id,
@@ -70,11 +70,11 @@ const PlacesService = {
             hh_end: placeData.hh_end,
             notes: xss(placeData.notes),
             items: (placeData.items) ? placeData.items.map(place => xss(place)) : placeData.items
-        }
+        };
     },
     serializePlaces(places) {
-        return places.map(this.serializePlace)
+        return places.map(this.serializePlace);
     },
-}
+};
 
-module.exports = PlacesService
+module.exports = PlacesService;

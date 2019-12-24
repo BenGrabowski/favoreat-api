@@ -1,6 +1,6 @@
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const AuthService = require('../src/auth/auth-service')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const AuthService = require('../src/auth/auth-service');
 
 function makeUsersArray() {
   return [
@@ -28,7 +28,7 @@ function makeUsersArray() {
       password: 'password',
       date_created: '2029-01-22T16:28:32.615Z',
     },
-  ]
+  ];
 }
 
 function makePlacesArray() {
@@ -66,13 +66,13 @@ function makePlacesArray() {
       notes: null,
       items: null
     },
-  ]
+  ];
 }
 
 function makeFixtures() {
-    const testUsers = makeUsersArray()
-    const testPlaces = makePlacesArray()
-    return { testUsers, testPlaces }
+    const testUsers = makeUsersArray();
+    const testPlaces = makePlacesArray();
+    return { testUsers, testPlaces };
 }
 
 function cleanTables(db) {
@@ -81,37 +81,37 @@ function cleanTables(db) {
             favoreat_users,
             favoreat_places
             RESTART IDENTITY CASCADE`
-    )
+    );
 }
 
 function seedUsers(db, users) {
     const preppedUsers = users.map(user => ({
       ...user,
       password: bcrypt.hashSync(user.password, 1)
-    }))
+    }));
     return db.into('favoreat_users').insert(preppedUsers)
       .then(() =>
         db.raw(
           `SELECT setval('favoreat_users_id_seq', ?)`,
           [users[users.length - 1].id],
         )
-      )
+      );
   }
 
   function seedPlaces(db, places, users) {
     return db.transaction(async trx => {
-      await seedUsers(trx, users)
-      await trx.into('favoreat_places').insert(places)
+      await seedUsers(trx, users);
+      await trx.into('favoreat_places').insert(places);
       await trx.raw(
         `SELECT setval('favoreat_places_id_seq', ?)`,
         [places[places.length -1].id]
-      )
-    })
+      );
+    });
   }
 
   function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
-    const token = AuthService.createJwt(user.user_name, { user_id: user.id })
-    return `Bearer ${token}`
+    const token = AuthService.createJwt(user.user_name, { user_id: user.id });
+    return `Bearer ${token}`;
   }
 
 module.exports = {
@@ -122,4 +122,4 @@ module.exports = {
     seedPlaces,
     cleanTables,
     makeAuthHeader,
-}
+};
