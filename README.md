@@ -11,34 +11,34 @@ Note: user_id and Authorization need to be set as Headers for all requests to /p
  - GET: Returns user's places formatted as JSON
  - POST: Adds a new places
  - Request Requirements:
-    1. Headers
-        - 'Authorization': 'bearer [your jwt token]'
-        - 'user_id': '[your user id]'
+    - Headers
+        - Authorization: bearer [your jwt token]
+        - user_id: [your user id]
 
 ### /api/places/:place_id
 - GET: Returns a specific place from a user's places
 - DELETE: Removes a place from a user's places
 - PATCH: Edits a place
 - Request Requirements:
-    1. Headers
-        - 'Authorization': 'bearer [your jwt token]'
-        - 'user_id': '[your user id]'
-    2. Query Paramters
+    - Headers
+        - Authorization: bearer [your jwt token]
+        - user_id: [your user id]
+    - Query Paramters
         - /place_id
 
 ### /api/auth/login
 - POST: submits the username & password entered in the Login form
 - Request requirements: 
-    1. Headers
-        - 'content-type': 'application/json'
-    2. Body
+    - Headers
+        - content-type: application/json
+    - Body
         - {user_name, password} formatted as JSON 
 
 ### /api/users
 - POST: Registers a new username & password combination if the requirements are met
 - Request Requirements:
-    1. Headers
-        - 'content-type': 'application/json'
-    2. Body
+    - Headers
+        - content-type: application/json
+    - Body
         - {user_name, password} formatted as JSON
 
